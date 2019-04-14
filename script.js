@@ -5,9 +5,10 @@ let nbTriangles = 20;
 let prevMouseY = 0;
 let spinCount = 0;
 let constantSpeed = 0;
+let moreRotation = 0;
 let halfTurn = false;
-let arrowMode = true;
-let followPoint = 0;
+// let arrowMode = true;
+let anglePoint = 0;
 
 function setup() {
     //frameRate(10);
@@ -24,7 +25,6 @@ function setup() {
 }
 
 function draw() {    
-    translate(windowWidth/2, windowHeight/2);
     if(!paused) {
         background(0);
 
@@ -33,16 +33,11 @@ function draw() {
         });
 
 
-        for(let i = 0; i < nbTriangles; i++) {
-            
-            // if(trianglesArray[i].angle > 360) {
-            //     trianglesArray[i].angle %= 360;
-
-            // }
-
-            if(i != 0) {
-                trianglesArray[i].angle = lerp(trianglesArray[i].angle, trianglesArray[i-1].angle, 0.25);
-            }
+        //Update triangles
+        for(let i = 1; i < nbTriangles; i++) {            
+            trianglesArray[i].angle = lerp(trianglesArray[i].angle, trianglesArray[i-1].angle, 0.25);
+            trianglesArray[i].x = lerp(trianglesArray[i].x, trianglesArray[i-1].x, 0.15);
+            trianglesArray[i].y = lerp(trianglesArray[i].y, trianglesArray[i-1].y, 0.15);            
         }
 
         if(mouseX < windowWidth/2) {
@@ -55,11 +50,12 @@ function draw() {
 
         prevMouseY = mouseY;
         
-        if(!arrowMode) {
-            followPoint = 360*spinCount + atan2(mouseY - height / 2, mouseX - width / 2)+90;
-        } else {
-            followPoint += constantSpeed;
-        }
+        // if(!arrowMode) {
+            anglePoint = 360*spinCount + atan2(mouseY - height / 2, mouseX - width / 2)+90;
+        // } else {
+            moreRotation += constantSpeed;
+            anglePoint += moreRotation;
+        // }
         
         if(halfTurn) {
             halfTurn = false;
@@ -75,7 +71,11 @@ function draw() {
         //trianglesArray[0].angle += (mouseX-windowWidth/2)/(windowWidth/(20*mouseY/(windowHeight)));
 
         //Follow Mouse MODE
-        trianglesArray[0].angle = followPoint;
+
+        //Update first triangle
+        trianglesArray[0].angle = lerp(trianglesArray[0].angle, anglePoint, 0.25);
+        trianglesArray[0].x = lerp(trianglesArray[0].x, mouseX, 0.25);
+        trianglesArray[0].y = lerp(trianglesArray[0].y, mouseY, 0.25);
     }
 }
 
@@ -83,10 +83,13 @@ class MyTriangle {
     constructor(size, angle) {
         this.size = 25*size;
         this.angle = angle;
+        this.x = windowWidth/2;
+        this.y = windowHeight/2;
     }
 
     display() {
         push();
+        translate(this.x, this.y);
         rotate(this.angle);
         triangle(0, -this.size, -(sqrt(3)*this.size)/2, this.size/2, (sqrt(3)*this.size)/2, this.size/2);
         pop();
@@ -101,16 +104,20 @@ function keyPressed() {
     } else if (keyCode === UP_ARROW) {
         halfTurn = true;        
         arrowMode = false;
+        //constantSpeed = 0;
     } else if (keyCode === LEFT_ARROW) {
         constantSpeed -= 0.5;
-        arrowMode = true;
+        // arrowMode = true;
     } else if (keyCode === RIGHT_ARROW) {
         constantSpeed += 0.5;
-        arrowMode = true;
+        // arrowMode = true;
+    } else if (key === '0') {
+        constantSpeed = 0;
+        moreRotation = 0;
     }
 }
 
-function mouseMoved() {
-    arrowMode = false;
-    constantSpeed = 0;
-}
+// function mouseMoved() {
+//     arrowMode = false;
+//     constantSpeed = 0;
+// }
