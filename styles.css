@@ -18,6 +18,7 @@ p {
     transform: translate(-50%, -50%);
     animation: fadeOut 5s ease-out;
     opacity: 0
+    /*  */
 }
 
 @keyframes fadeOut {

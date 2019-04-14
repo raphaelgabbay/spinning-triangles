@@ -10,6 +10,8 @@ let halfTurn = false;
 // let arrowMode = true;
 let anglePoint = 0;
 
+//TODO Add dat.gui interface
+
 function setup() {
     //frameRate(10);
     //fullscreen();
