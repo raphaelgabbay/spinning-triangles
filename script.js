@@ -68,12 +68,6 @@ function draw() {
             }
         }
         
-
-        //2D Pad MODE
-        //trianglesArray[0].angle += (mouseX-windowWidth/2)/(windowWidth/(20*mouseY/(windowHeight)));
-
-        //Follow Mouse MODE
-
         //Update first triangle
         trianglesArray[0].angle = lerp(trianglesArray[0].angle, anglePoint, 0.25);
         trianglesArray[0].x = lerp(trianglesArray[0].x, mouseX, 0.25);
