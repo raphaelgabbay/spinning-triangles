@@ -92,7 +92,7 @@ function draw() {
         
         if(halfTurn) {
             halfTurn = false;
-            spinCount = random(-10, 10);
+            spinCount = random(-2, 2);
         }
     }
 }
