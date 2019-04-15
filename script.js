@@ -84,7 +84,6 @@ function draw() {
                 }
             }
             anglePoint = 360*spinCount + atan2(mouseY - height / 2, mouseX - width / 2)+90;
-            
         }
         
 
